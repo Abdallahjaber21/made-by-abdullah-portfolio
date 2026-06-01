@@ -1,0 +1,26 @@
+{
+  "name": "made-by-abdullah",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "gsap": "^3.13.0",
+    "lenis": "^1.1.13",
+    "next": "16.1.4",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "three": "^0.176.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/three": "^0.176.0",
+    "typescript": "^5"
+  }
+}
