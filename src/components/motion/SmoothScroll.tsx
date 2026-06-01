@@ -24,7 +24,7 @@ export const HOME_SCROLL_KEY = "mba.homeScroll";
  * state, and the cursor blob — all persistent across client navigation.
  *
  * Effect B (per route): section reveals, hero entrance, role rotator, stat
- * count-ups, manifesto scrub, project parallax, and service-card glow —
+ * count-ups, approach scrub, project parallax, and service-card glow —
  * rebuilt whenever the pathname changes so a new page's content reveals
  * correctly. Reduced-motion is honored throughout.
  */

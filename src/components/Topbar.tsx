@@ -6,7 +6,7 @@ const NAV: Array<[string, string, string]> = [
   ["services", "02", "Services"],
   ["projects", "03", "Work"],
   ["clients", "04", "Clients"],
-  ["manifesto", "05", "Manifesto"],
+  ["approach", "05", "Approach"],
   ["contact", "06", "Contact"],
 ];
 

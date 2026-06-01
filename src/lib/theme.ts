@@ -17,7 +17,8 @@ export const ACCENT_PRESETS: AccentPreset[] = [
   { hex: "#d62d49", deep: "#7c1424", name: "Signal red" },
 ];
 
-export const DEFAULT_ACCENT = ACCENT_PRESETS[0].hex;
+// Signal red — the "Approach" / portfolio default accent (last preset).
+export const DEFAULT_ACCENT = ACCENT_PRESETS[ACCENT_PRESETS.length - 1].hex;
 export const DEFAULT_MODE: Mode = "dark";
 
 export const ACCENT_KEY = "mba.accent";

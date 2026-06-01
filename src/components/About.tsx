@@ -8,9 +8,18 @@ const STACK = [
   { Icon: StackIcons.TypeScript, name: "TypeScript", meta: "typed" },
   { Icon: StackIcons.React, name: "React", meta: "ui" },
   { Icon: StackIcons.MySQL, name: "MySQL · PostgreSQL", meta: "data" },
-  { Icon: StackIcons.Docker, name: "Docker · AWS", meta: "cloud" },
+  { Icon: StackIcons.Docker, name: "Docker · AWS · GCP · Azure", meta: "cloud" },
   { Icon: StackIcons.GitHubActions, name: "GitHub Actions", meta: "ci/cd" },
   { Icon: StackIcons.Redis, name: "Redis · Elastic", meta: "cache · search" },
+];
+
+// Secondary tools — shown as compact icon chips under the main stack.
+const ALSO = [
+  { Icon: StackIcons.Node, name: "Node" },
+  { Icon: StackIcons.Tailwind, name: "Tailwind" },
+  { Icon: StackIcons.GraphQL, name: "GraphQL" },
+  { Icon: StackIcons.Flutter, name: "Flutter" },
+  { Icon: StackIcons.MongoDB, name: "MongoDB" },
 ];
 
 export default function About() {
@@ -86,7 +95,16 @@ export default function About() {
             </div>
             <div className="stack-foot">
               <span>ALSO</span>
-              <span>Node · Tailwind · GraphQL · Flutter · MongoDB</span>
+              <div className="stack-also">
+                {ALSO.map(({ Icon, name }) => (
+                  <span className="also-chip" key={name}>
+                    <span className="glyph">
+                      <Icon />
+                    </span>
+                    {name}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
         </div>

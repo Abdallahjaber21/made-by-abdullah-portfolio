@@ -5,7 +5,7 @@ import About from "@/components/About";
 import Services from "@/components/Services";
 import Projects from "@/components/Projects";
 import Clients from "@/components/Clients";
-import Manifesto from "@/components/Manifesto";
+import Approach from "@/components/Approach";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
@@ -20,7 +20,7 @@ export default function Home() {
         <Services />
         <Projects />
         <Clients />
-        <Manifesto />
+        <Approach />
         <Contact />
         <Footer />
       </main>

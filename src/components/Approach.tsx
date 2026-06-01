@@ -55,10 +55,10 @@ const STATEMENTS: Statement[] = [
   },
 ];
 
-export default function Manifesto() {
+export default function Approach() {
   return (
-    <section id="manifesto" data-screen-label="Manifesto" className="manifesto">
-      <div className="manifesto-grid-bg" />
+    <section id="approach" data-screen-label="Approach" className="approach">
+      <div className="approach-grid-bg" />
       <div className="container">
         <div className="section-head">
           <div>
@@ -73,7 +73,7 @@ export default function Manifesto() {
           </p>
         </div>
 
-        <div className="manifesto-statements">
+        <div className="approach-statements">
           {STATEMENTS.map((s) => (
             <div className="statement" key={s.idx}>
               <span className="idx">{s.idx}</span>

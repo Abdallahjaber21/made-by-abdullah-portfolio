@@ -67,10 +67,6 @@ export default function Services() {
               What I&apos;m hired for.
             </h2>
           </div>
-          <p className="lead reveal">
-            Engagements run from focused diagnostics to multi-quarter platform builds. What stays
-            constant: deep involvement, clear decisions, and working software at every step.
-          </p>
         </div>
 
         <div className="svc-grid">

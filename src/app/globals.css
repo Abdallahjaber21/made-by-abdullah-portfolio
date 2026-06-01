@@ -594,6 +594,24 @@ html[data-mode="light"] .topbar.scrolled { background: rgba(244,243,238,0.85); }
   font-family: var(--font-mono); font-size: 11px; color: var(--fg-muted); letter-spacing: .08em;
   gap: 12px; flex-wrap: wrap;
 }
+.stack-also { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+.also-chip {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 5px 10px 5px 7px;
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--r-full);
+  background: var(--bg-elev-1);
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0;
+  color: var(--fg);
+  transition: background var(--dur-fast), border-color var(--dur-fast);
+}
+.also-chip:hover { background: var(--bg-elev-2); border-color: var(--accent); }
+.also-chip .glyph {
+  width: 20px; height: 20px;
+  display: grid; place-items: center;
+  color: var(--accent); flex-shrink: 0;
+}
+.also-chip .glyph svg { width: 14px; height: 14px; }
 
 /* ===========================================================
    Services
@@ -846,7 +864,12 @@ html[data-mode="light"] .topbar.scrolled { background: rgba(244,243,238,0.85); }
 }
 .media-slide.is-active { opacity: 1; transform: translateX(0); pointer-events: auto; }
 .media-slide.is-prev { opacity: 0; transform: translateX(-8%); }
-.media-slide img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+/* `contain` shows the whole screenshot — fit to the frame, never zoomed or
+   cropped. The slide background matches the device screen so the slim
+   letterbox bands (where the shot's aspect differs from the frame) read as
+   intentional rather than as gaps. */
+.media-slide { background: var(--bg); }
+.media-slide img { width: 100%; height: 100%; object-fit: contain; object-position: center; }
 
 .slide-caption {
   position: absolute;
@@ -1047,21 +1070,21 @@ html[data-mode="light"] .topbar.scrolled { background: rgba(244,243,238,0.85); }
 .test-card .author .role { font-size: 12px; color: var(--fg-muted); }
 
 /* ===========================================================
-   Manifesto
+   Approach
    =========================================================== */
-.manifesto {
+.approach {
   background:
     radial-gradient(ellipse 60% 50% at 50% 50%, var(--accent-soft), transparent 65%),
     linear-gradient(180deg, var(--bg) 0%, #0a0c1f 100%);
   position: relative;
   overflow: hidden;
 }
-html[data-mode="light"] .manifesto {
+html[data-mode="light"] .approach {
   background:
     radial-gradient(ellipse 60% 50% at 50% 50%, var(--accent-soft), transparent 65%),
     linear-gradient(180deg, var(--bg) 0%, #ece8d6 100%);
 }
-.manifesto-grid-bg {
+.approach-grid-bg {
   position: absolute;
   inset: 0;
   background-image:
@@ -1072,7 +1095,7 @@ html[data-mode="light"] .manifesto {
   -webkit-mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, black 0%, transparent 70%);
   opacity: 0.5;
 }
-.manifesto-statements { position: relative; z-index: 1; }
+.approach-statements { position: relative; z-index: 1; }
 .statement {
   font-family: var(--font-display);
   font-weight: 300;
@@ -1684,3 +1707,52 @@ html[data-mode="light"] .test-card .author .author-logo img {
 .back-link:hover { color: var(--accent); gap: 12px; }
 /* On /work the projects section's own top padding is redundant */
 .work-page #projects { padding-top: clamp(24px, 4vw, 48px); }
+
+/* ===========================================================
+   Loader — pre-homepage splash (tinted by the active accent)
+   =========================================================== */
+.loader-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  background:
+    radial-gradient(ellipse 50% 45% at 50% 45%, var(--accent-soft), transparent 70%),
+    var(--bg);
+  will-change: opacity, transform;
+}
+.loader-mark {
+  width: clamp(140px, 24vw, 220px);
+  height: clamp(140px, 24vw, 220px);
+  stroke: var(--accent);
+  filter: drop-shadow(0 0 18px var(--accent-glow));
+  /* Hidden until JS primes the dash-offsets, so we never flash the fully-drawn
+     mark before the draw-on animation starts. Revealed by gsap.set() in the
+     effect; forced back on for reduced-motion / no-JS below. */
+  opacity: 0;
+}
+.loader-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: inline-flex;
+  padding-left: 0.42em; /* balance the trailing letter-spacing */
+}
+.loader-label .ld-char { display: inline-block; }
+.loader-name {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+}
+@media (prefers-reduced-motion: reduce) {
+  /* No draw animation runs, so show the mark statically (fully drawn). */
+  .loader-mark { filter: none; opacity: 1; }
+}

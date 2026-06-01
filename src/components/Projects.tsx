@@ -13,20 +13,15 @@ export default function Projects({ all = false }: { all?: boolean }) {
       <div className="container">
         <div className="section-head">
           <div>
-            <span className="eyebrow reveal">03 · {all ? "All work" : "Selected work"}</span>
+            <span className="eyebrow reveal">03 · {all ? "All work" : "Recent work"}</span>
             <h2 className="reveal" style={{ marginTop: 18 }}>
               {all ? (
                 <>Everything I&apos;ve<br />built and shipped.</>
               ) : (
-                <>Selected work,<br />built and shipped.</>
+                <>Recent work,<br />built and shipped.</>
               )}
             </h2>
           </div>
-          <p className="lead reveal">
-            {all
-              ? "Mobile apps, a point-of-sale platform, and an e-commerce build — the full set. Happy to walk through the architecture and tradeoffs over a call."
-              : "A slice of recent work — mobile apps, a point-of-sale platform, and an e-commerce build. Happy to walk through the architecture over a call."}
-          </p>
         </div>
 
         {list.map((p) => (

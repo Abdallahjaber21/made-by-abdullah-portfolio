@@ -20,7 +20,7 @@ export const PROJECTS: Project[] = [
     ],
     projectType: "mobile",
     orientation: "landscape",
-    projectUrl: "https://samar.com",
+    projectUrl: "https://apps.apple.com/us/app/%D8%B3%D9%85%D8%B1/id6736710369",
     urlLabel: "samar.com",
     shots: [
       { src: "/assets/projects/samar/home.png", label: "HOME", sub: "Lobby" },
@@ -65,6 +65,7 @@ export const PROJECTS: Project[] = [
       { n: "Auth", l: "Accounts & favourites" },
       { n: "Live", l: "Real-time updates" },
     ],
+    projectUrl: "https://play.google.com/store/apps/details?id=com.codendot.keepproperty&hl=en",
     projectType: "mobile",
     orientation: "portrait",
     shots: [

@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
+import Loader from "@/components/Loader";
 import SmoothScroll from "@/components/motion/SmoothScroll";
 import { siteConfig } from "@/config/site";
 
@@ -30,7 +31,7 @@ export const viewport: Viewport = {
 // Apply the stored theme before first paint to avoid a flash of the default.
 const noFlash = `(function(){try{
 var deep={"#a160c5":"#7a3d9b","#7a3d9b":"#3d1f55","#8c93cf":"#5d63a8","#5d8dff":"#3358cf","#22d3ee":"#0e8aa2","#d62d49":"#7c1424"};
-var a=(localStorage.getItem('mba.accent')||'#a160c5').toLowerCase();
+var a=(localStorage.getItem('mba.accent')||'#d62d49').toLowerCase();
 var m=localStorage.getItem('mba.mode')||'dark';
 var d=deep[a]||a;var r=document.documentElement;
 function ax(al){return Math.round(al*255).toString(16).padStart(2,'0');}
@@ -59,6 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <ThemeProvider>
+          <Loader />
           {children}
           <ThemeSwitcher />
         </ThemeProvider>
