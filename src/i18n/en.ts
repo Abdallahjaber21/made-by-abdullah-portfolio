@@ -213,6 +213,8 @@ export const en = {
       sentStatus: "STATUS",
       sentStatusVal: "received",
       sentReply: "REPLY",
+      error: "Something went wrong sending your message. Please try again, or email me directly.",
+      retry: "Try again",
     },
   },
 

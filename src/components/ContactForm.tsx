@@ -8,7 +8,9 @@ import { useT } from "./LocaleProvider";
 type ProjectTypeKey = "web" | "mobile" | "saas" | "backend" | "ai" | "other";
 const PROJECT_TYPE_KEYS: ProjectTypeKey[] = ["web", "mobile", "saas", "backend", "ai", "other"];
 
-type Status = "idle" | "sending" | "sent";
+type Status = "idle" | "sending" | "sent" | "error";
+
+const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 
 export default function ContactForm() {
   const t = useT();
@@ -17,6 +19,7 @@ export default function ContactForm() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [projectType, setProjectType] = useState<ProjectTypeKey>("web");
+  const [company, setCompany] = useState(""); // honeypot — must stay empty
   const [status, setStatus] = useState<Status>("idle");
   const [ref, setRef] = useState("REF-2026-AJ-····");
   const activity = useRef(0);
@@ -38,19 +41,27 @@ export default function ContactForm() {
     if (activity.current % 4 === 0) emitContact({ kind: "pulse" });
   };
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (status !== "idle") return;
+    if (status === "sending") return;
     setStatus("sending");
     emitContact({ kind: "transmit" });
 
-    fetch("/api/contact", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, projectType, message, ref }),
-    }).catch(() => {});
-
-    timers.current.push(setTimeout(() => setStatus("sent"), 1600));
+    try {
+      // Run the request alongside a short floor so the transmit animation reads.
+      const [res] = await Promise.all([
+        fetch("/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, projectType, message, ref, company }),
+        }),
+        sleep(1200),
+      ]);
+      if (res.ok) setStatus("sent");
+      else setStatus("error");
+    } catch {
+      setStatus("error");
+    }
   };
 
   return (
@@ -67,6 +78,18 @@ export default function ContactForm() {
           <span className="form-title">{f.title}</span>
           <span className="form-id">{ref}</span>
         </div>
+
+        {/* Honeypot — hidden from real users; bots that fill it are dropped. */}
+        <input
+          type="text"
+          name="company"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          value={company}
+          onChange={(e) => setCompany(e.target.value)}
+          style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
+        />
 
         <div className="field-grid">
           <div className="field">
@@ -140,6 +163,12 @@ export default function ContactForm() {
           </div>
         </div>
 
+        {status === "error" && (
+          <p className="form-error" role="alert">
+            {f.error}
+          </p>
+        )}
+
         <div className="transmit-row">
           <div className="transmit-meta">
             <span><span className="key">{f.repliesKey}</span> {f.repliesVal}</span>
@@ -148,8 +177,13 @@ export default function ContactForm() {
               <span className="key">{f.basedKey}</span> {siteConfig.location} · {siteConfig.timezone}
             </span>
           </div>
-          <button type="submit" className="btn-transmit" disabled={status !== "idle"}>
-            {status === "sending" ? f.sending : f.send} <span className="arrow">→</span>
+          <button
+            type="submit"
+            className="btn-transmit"
+            disabled={status === "sending" || status === "sent"}
+          >
+            {status === "sending" ? f.sending : status === "error" ? f.retry : f.send}{" "}
+            <span className="arrow">→</span>
           </button>
         </div>
 

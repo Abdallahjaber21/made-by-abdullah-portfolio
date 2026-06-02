@@ -688,8 +688,38 @@ html[data-mode="light"] .topbar.scrolled { background: rgba(244,243,238,0.85); }
 
 .svc-card.wide { grid-column: span 8; }
 .svc-card.full { grid-column: span 12; }
-@media (max-width: 900px) {
-  .svc-card, .svc-card.wide, .svc-card.full { grid-column: span 12; }
+
+/* On tablet & mobile the service cards become a horizontal, swipable
+   scroll-snap carousel instead of a tall stack — matches the testimonials
+   treatment. One card per view on phones, two-ish with a peek on tablets. */
+@media (max-width: 1024px) {
+  .svc-grid {
+    display: flex;
+    grid-template-columns: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: var(--s-4);
+    /* Bleed to the gutter edges so the next card peeks in. */
+    margin-inline: calc(-1 * var(--gutter));
+    padding-inline: var(--gutter);
+    scroll-padding-inline: var(--gutter);
+  }
+  .svc-grid::-webkit-scrollbar { display: none; }
+  .svc-card,
+  .svc-card.wide,
+  .svc-card.full {
+    grid-column: auto;
+    scroll-snap-align: start;
+    flex: 0 0 82%;
+    min-width: 0;
+  }
+}
+@media (min-width: 640px) and (max-width: 1024px) {
+  .svc-card,
+  .svc-card.wide,
+  .svc-card.full { flex-basis: 56%; }
 }
 
 .svc-card .svc-head {
@@ -1391,6 +1421,17 @@ html[data-mode="light"] .approach {
 .project-types .chip.is-active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
 .project-types .chip.is-active::before { content: "▸"; color: var(--accent); margin-right: 2px; }
 
+/* Inline send-failure message above the transmit row. */
+.form-error {
+  margin-top: var(--s-6);
+  padding: 10px 14px;
+  border: 1px solid var(--accent);
+  border-radius: var(--r-md);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 13px;
+  line-height: 1.45;
+}
 .transmit-row {
   display: flex; align-items: center; justify-content: space-between;
   gap: var(--s-6);
