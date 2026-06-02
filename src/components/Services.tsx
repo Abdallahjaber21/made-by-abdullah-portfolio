@@ -1,94 +1,79 @@
+"use client";
+
 import type { ComponentType, SVGProps } from "react";
 import { GeneralIcons } from "./icons";
+import { useT } from "./LocaleProvider";
 
-interface Service {
-  num: string;
+type ServiceKey = "product" | "saas" | "ai" | "architecture" | "performance" | "leadership";
+
+const SERVICE_META: Array<{
+  key: ServiceKey;
   icon: ComponentType<SVGProps<SVGSVGElement>>;
-  title: string;
-  body: string;
   tags: string[];
   wide?: boolean;
-}
-
-const SERVICES: Service[] = [
+}> = [
   {
-    num: "/01 · Product engineering",
+    key: "product",
     icon: GeneralIcons.Layout,
-    title: "Staff-level product engineering",
-    body: "One engineer accountable for outcomes — from data model and API contract through interaction, state, and shipped UI. Deep involvement, written-down decisions, working software at every gate.",
     tags: ["Laravel", "Next.js", "TypeScript", "React", "PostgreSQL", "REST · APIs"],
     wide: true,
   },
+  { key: "saas", icon: GeneralIcons.Layers, tags: ["Multi-tenant", "Laravel", "Next.js", "Queues"] },
+  { key: "ai", icon: GeneralIcons.Sparkles, tags: ["LLM integration", "Agents", "RAG", "Evals"] },
   {
-    num: "/02 · SaaS",
-    icon: GeneralIcons.Layers,
-    title: "SaaS platform development",
-    body: "Multi-tenant platforms built to grow — auth, billing surfaces, background jobs, and clean module boundaries.",
-    tags: ["Multi-tenant", "Laravel", "Next.js", "Queues"],
-  },
-  {
-    num: "/03 · AI",
-    icon: GeneralIcons.Sparkles,
-    title: "AI-powered application development",
-    body: "LLM integrations and agentic workflows wired into real products — retrieval, tool-use, and evals, not demos.",
-    tags: ["LLM integration", "Agents", "RAG", "Evals"],
-  },
-  {
-    num: "/04 · Architecture",
+    key: "architecture",
     icon: GeneralIcons.Share,
-    title: "System architecture & modernization",
-    body: "Boundaries, contracts, and staged migrations that move legacy systems forward without downtime.",
     tags: ["Yii2 → Next.js", "Migrations", "ADRs", "Refactoring"],
   },
   {
-    num: "/05 · Performance",
+    key: "performance",
     icon: GeneralIcons.Gauge,
-    title: "Performance optimization",
-    body: "Query tuning, indexing, caching, and profiling — slow products and slow pipelines made fast.",
     tags: ["Query tuning", "Indexing", "Caching", "Profiling"],
   },
   {
-    num: "/06 · Leadership",
+    key: "leadership",
     icon: GeneralIcons.Users,
-    title: "Technical leadership & consulting",
-    body: "Staff-level guidance — architecture reviews, standards, mentoring, and a second pair of eyes on the decisions that are expensive to reverse.",
     tags: ["Reviews", "Standards", "Mentoring", "Advisory"],
   },
 ];
 
 export default function Services() {
+  const t = useT();
   return (
     <section id="services" data-screen-label="Services">
       <div className="container">
         <div className="section-head">
           <div>
-            <span className="eyebrow reveal">02 · Services</span>
+            <span className="eyebrow reveal">{t.services.eyebrow}</span>
             <h2 className="reveal" style={{ marginTop: 18 }}>
-              What I&apos;m hired for.
+              {t.services.heading}
             </h2>
           </div>
         </div>
 
         <div className="svc-grid">
-          {SERVICES.map((s) => (
-            <article className={`svc-card reveal${s.wide ? " wide" : ""}`} key={s.num}>
-              <div className="svc-head">
-                <span className="svc-num">{s.num}</span>
-                <div className="gizmo">
-                  <s.icon />
+          {SERVICE_META.map((s) => {
+            const copy = t.services.items[s.key];
+            return (
+              <article className={`svc-card reveal${s.wide ? " wide" : ""}`} key={s.key}>
+                <div className="svc-head">
+                  <span className="svc-num">{copy.num}</span>
+                  <div className="gizmo">
+                    <s.icon />
+                  </div>
                 </div>
-              </div>
-              <h3>{s.title}</h3>
-              <p>{s.body}</p>
-              <div className="tags">
-                {s.tags.map((t) => (
-                  <span className="tag" key={t}>
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </article>
-          ))}
+                <h3>{copy.title}</h3>
+                <p>{copy.body}</p>
+                <div className="tags">
+                  {s.tags.map((tag) => (
+                    <span className="tag" key={tag}>
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>

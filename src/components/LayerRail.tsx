@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-const LAYERS = ["SURFACE", "ORCHESTRATION", "COMPUTE FABRIC", "TOPOLOGY", "INTELLIGENCE"];
+import { useT } from "./LocaleProvider";
 
 export default function LayerRail() {
+  const t = useT();
+  const LAYERS = t.layers;
   const [idx, setIdx] = useState(0);
 
   useEffect(() => {
@@ -20,7 +21,7 @@ export default function LayerRail() {
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [LAYERS]);
 
   return (
     <nav className="layer-rail" aria-label="Abstraction layers" aria-hidden="true">

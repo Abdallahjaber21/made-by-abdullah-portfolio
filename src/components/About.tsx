@@ -1,110 +1,148 @@
+"use client";
+
 import { StackIcons } from "./icons";
+import { useT } from "./LocaleProvider";
 
-const STACK = [
-  { Icon: StackIcons.PHP, name: "PHP", meta: "language" },
-  { Icon: StackIcons.Laravel, name: "Laravel", meta: "framework" },
-  { Icon: StackIcons.Yii2, name: "Yii2", meta: "framework" },
-  { Icon: StackIcons.NextJS, name: "Next.js", meta: "frontend" },
-  { Icon: StackIcons.TypeScript, name: "TypeScript", meta: "typed" },
-  { Icon: StackIcons.React, name: "React", meta: "ui" },
-  { Icon: StackIcons.MySQL, name: "MySQL · PostgreSQL", meta: "data" },
-  { Icon: StackIcons.Docker, name: "Docker · AWS · GCP · Azure", meta: "cloud" },
-  { Icon: StackIcons.GitHubActions, name: "GitHub Actions", meta: "ci/cd" },
-  { Icon: StackIcons.Redis, name: "Redis · Elastic", meta: "cache · search" },
-];
-
-// Secondary tools — shown as compact icon chips under the main stack.
-const ALSO = [
-  { Icon: StackIcons.Node, name: "Node" },
-  { Icon: StackIcons.Tailwind, name: "Tailwind" },
-  { Icon: StackIcons.GraphQL, name: "GraphQL" },
-  { Icon: StackIcons.Flutter, name: "Flutter" },
-  { Icon: StackIcons.MongoDB, name: "MongoDB" },
-];
+// The stack, grouped by category. Each row renders a label + a wrapping set of
+// icon chips, so it stays readable from wide desktop down to small phones.
+// `labelKey` indexes t.about.cat for the translated category label.
+const STACK_GROUPS = [
+  {
+    labelKey: "languages" as const,
+    items: [
+      { Icon: StackIcons.PHP, name: "PHP" },
+      { Icon: StackIcons.Python, name: "Python" },
+      { Icon: StackIcons.JavaScript, name: "JavaScript" },
+      { Icon: StackIcons.CSharp, name: "C#" },
+    ],
+  },
+  {
+    labelKey: "frameworks" as const,
+    items: [
+      { Icon: StackIcons.Yii2, name: "Yii2" },
+      { Icon: StackIcons.Laravel, name: "Laravel" },
+      { Icon: StackIcons.Django, name: "Django" },
+      { Icon: StackIcons.NestJS, name: "Nest.js" },
+      { Icon: StackIcons.Node, name: "Node.js" },
+      { Icon: StackIcons.NextJS, name: "Next.js" },
+    ],
+  },
+  {
+    labelKey: "mobile" as const,
+    items: [
+      { Icon: StackIcons.Flutter, name: "Flutter" },
+      { Icon: StackIcons.React, name: "React Native" },
+      { Icon: StackIcons.Ionic, name: "Ionic" },
+      { Icon: StackIcons.Cordova, name: "Cordova" },
+      { Icon: StackIcons.PHP, name: "PHP Native" },
+    ],
+  },
+  {
+    labelKey: "styling" as const,
+    items: [
+      { Icon: StackIcons.CSS3, name: "CSS3" },
+      { Icon: StackIcons.Tailwind, name: "Tailwind CSS" },
+      { Icon: StackIcons.ShadCN, name: "shadcn/ui" },
+      { Icon: StackIcons.Bootstrap, name: "Bootstrap" },
+      { Icon: StackIcons.GSAP, name: "GSAP" },
+      { Icon: StackIcons.FramerMotion, name: "Framer Motion" },
+    ],
+  },
+  {
+    labelKey: "cloud" as const,
+    items: [
+      { Icon: StackIcons.GoogleCloud, name: "GCP" },
+      { Icon: StackIcons.Azure, name: "Azure" },
+      { Icon: StackIcons.AWS, name: "AWS" },
+    ],
+  },
+  {
+    labelKey: "data" as const,
+    items: [
+      { Icon: StackIcons.MySQL, name: "MySQL" },
+      { Icon: StackIcons.MongoDB, name: "MongoDB" },
+      { Icon: StackIcons.PostgreSQL, name: "PostgreSQL" },
+      { Icon: StackIcons.SQLite, name: "SQLite" },
+      { Icon: StackIcons.Firebase, name: "Firebase" },
+    ],
+  },
+  {
+    labelKey: "others" as const,
+    items: [
+      { Icon: StackIcons.GitHubActions, name: "GitHub Actions" },
+      { Icon: StackIcons.Terraform, name: "Terraform" },
+      { Icon: StackIcons.Docker, name: "Docker" },
+      { Icon: StackIcons.Kubernetes, name: "kubectl" },
+      { Icon: StackIcons.ArgoCD, name: "Argo CD" },
+    ],
+  },
+] as const;
 
 export default function About() {
+  const t = useT();
+  const a = t.about;
   return (
     <section id="about" data-screen-label="About">
       <div className="container">
         <div className="section-head">
           <div>
-            <span className="eyebrow reveal">01 · About</span>
+            <span className="eyebrow reveal">{a.eyebrow}</span>
             <h2 className="reveal" style={{ marginTop: 18 }}>
-              Seven years building<br />and scaling <em>real</em> software <em>systems</em>.
+              {a.headingA}
+              <br />
+              {a.headingB}
+              <em>{a.headingReal}</em>
+              {a.headingC}
+              <em>{a.headingSystems}</em>
+              {a.headingD}
             </h2>
           </div>
-          <p className="lead reveal">
-            I&apos;m a software engineer first. I architect the parts that don&apos;t show — the
-            schemas, the boundaries, the failure modes — so the product on top stays simple. Most of
-            my work is backend architecture, SaaS platforms, and modernizing systems that have to
-            keep running.
-          </p>
+          <p className="lead reveal">{a.lead}</p>
         </div>
 
         <div className="about-grid">
           <div className="bio">
-            <p className="reveal">
-              A Bachelor&apos;s in Computer Science and seven-plus years shipping production software —
-              across startups, SaaS companies, enterprise software, and freelance consulting. I&apos;ve
-              built greenfield platforms and, just as often, modernized legacy systems that couldn&apos;t
-              afford downtime.
-            </p>
-            <p className="reveal">
-              My core is PHP — Laravel and Yii2 — paired with Next.js, TypeScript and React on the
-              frontend, MySQL and PostgreSQL underneath, and Docker, AWS and CI/CD around it. I lean
-              on SOLID principles and design patterns because clean architecture is what lets a team
-              move quickly without breaking things.
-            </p>
-            <p className="reveal">
-              Lately I work as an AI-enhanced engineer — agentic workflows and LLM integrations to
-              move faster while every architectural decision stays firmly human. AI amplifies good
-              engineering; it doesn&apos;t replace it.
-            </p>
+            <p className="reveal">{a.bio1}</p>
+            <p className="reveal">{a.bio2}</p>
+            <p className="reveal">{a.bio3}</p>
 
             <div className="stat-row">
               <div className="stat reveal">
                 <div className="n" data-value="7" data-suffix="+">0</div>
-                <span className="l">Years building production software</span>
+                <span className="l">{a.statYears}</span>
               </div>
               <div className="stat reveal">
                 <div className="n" data-value="3">0</div>
-                <span className="l">Sectors — SaaS, enterprise, freelance</span>
+                <span className="l">{a.statSectors}</span>
               </div>
               <div className="stat reveal">
-                <div className="n">Staff</div>
-                <span className="l">Engineering level</span>
+                <div className="n">{a.statLevelValue}</div>
+                <span className="l">{a.statLevel}</span>
               </div>
             </div>
           </div>
 
           <div className="stack-card reveal">
             <div className="stack-card-head">
-              <span className="label">Stack · In regular use</span>
-              <span className="status"><span className="dot" />Daily drivers</span>
+              <span className="label">{a.stackTitle}</span>
+              <span className="status"><span className="dot" />{a.stackStatus}</span>
             </div>
-            <div className="stack-list">
-              {STACK.map(({ Icon, name, meta }) => (
-                <div className="stack-item" key={name}>
-                  <span className="glyph">
-                    <Icon />
-                  </span>
-                  {name}
-                  <span className="meta">{meta}</span>
+            <div className="stack-cats">
+              {STACK_GROUPS.map(({ labelKey, items }) => (
+                <div className="stack-cat" key={labelKey}>
+                  <span className="stack-cat-label">{a.cat[labelKey]}</span>
+                  <div className="stack-cat-items">
+                    {items.map(({ Icon, name }) => (
+                      <span className="stack-chip" key={name}>
+                        <span className="glyph">
+                          <Icon />
+                        </span>
+                        {name}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               ))}
-            </div>
-            <div className="stack-foot">
-              <span>ALSO</span>
-              <div className="stack-also">
-                {ALSO.map(({ Icon, name }) => (
-                  <span className="also-chip" key={name}>
-                    <span className="glyph">
-                      <Icon />
-                    </span>
-                    {name}
-                  </span>
-                ))}
-              </div>
             </div>
           </div>
         </div>

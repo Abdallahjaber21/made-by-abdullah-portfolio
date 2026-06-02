@@ -3,10 +3,17 @@
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
 import type { Project } from "@/types/card";
 import { GeneralIcons, stackIcon } from "./icons";
+import { useT } from "./LocaleProvider";
 
 const DWELL = 4200;
 
 export default function ProjectRow({ project }: { project: Project }) {
+  const t = useT();
+  // Translated per-project copy, keyed by title; fall back to the English data.
+  const tr = t.work[project.title as keyof typeof t.work];
+  const typeLabel = tr?.typeLabel ?? project.typeLabel;
+  const tag = tr?.tag ?? project.tag;
+  const description = tr?.description ?? project.description;
   const { shots } = project;
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -103,16 +110,16 @@ export default function ProjectRow({ project }: { project: Project }) {
   return (
     <div className="proj reveal" data-screen-label={`Project · ${project.title}`}>
       <div className="proj-meta">
-        <div className="proj-type">{project.typeLabel}</div>
-        <div className="proj-tag">{project.tag}</div>
+        <div className="proj-type">{typeLabel}</div>
+        <div className="proj-tag">{tag}</div>
         <h3>{project.title}</h3>
-        <p>{project.description}</p>
+        <p>{description}</p>
 
         <div className="proj-stats">
-          {project.stats.map((st) => (
+          {project.stats.map((st, i) => (
             <div className="stat" key={st.l}>
               <div className="n">{st.n}</div>
-              <span className="l">{st.l}</span>
+              <span className="l">{tr?.stats[i] ?? st.l}</span>
             </div>
           ))}
         </div>
@@ -131,7 +138,7 @@ export default function ProjectRow({ project }: { project: Project }) {
 
         {project.projectUrl && (
           <a className="proj-link" href={project.projectUrl} target="_blank" rel="noopener noreferrer">
-            Visit project <GeneralIcons.External style={{ width: 14, height: 14 }} />
+            {t.projects.visit} <GeneralIcons.External style={{ width: 14, height: 14 }} />
           </a>
         )}
       </div>
@@ -139,10 +146,12 @@ export default function ProjectRow({ project }: { project: Project }) {
       <div className="proj-visual">
         <div className={`device-stage${isPhone ? "" : " is-web"}`}>
           <span className="stage-label">
-            {isPhone ? `${landscape ? "LANDSCAPE" : "PORTRAIT"} · SWIPE` : "WEB APP · SWIPE"}
+            {isPhone
+              ? `${landscape ? t.projects.landscape : t.projects.portrait} · ${t.projects.swipe}`
+              : `${t.projects.webApp} · ${t.projects.swipe}`}
           </span>
           <span className="stage-count">
-            {len} {isPhone ? "SCREENS" : "VIEWS"}
+            {len} {isPhone ? t.projects.screens : t.projects.views}
           </span>
 
           {isPhone ? (
@@ -161,7 +170,7 @@ export default function ProjectRow({ project }: { project: Project }) {
                   <span />
                 </div>
                 <div className="url">{project.urlLabel || project.title.toLowerCase()}</div>
-                <span style={{ color: "var(--accent)" }}>LIVE</span>
+                <span style={{ color: "var(--accent)" }}>{t.projects.live}</span>
               </div>
               <div className="device-body">{carousel}</div>
             </div>

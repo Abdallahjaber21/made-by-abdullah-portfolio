@@ -3,9 +3,11 @@
 import Link from "next/link";
 import { GeneralIcons } from "./icons";
 import { HOME_SCROLL_KEY } from "./motion/SmoothScroll";
+import { useT } from "./LocaleProvider";
 
 /** Links to /work, remembering the current scroll so "Back to home" can restore it. */
 export default function ViewAllWork({ count }: { count: number }) {
+  const t = useT();
   const remember = () => {
     try {
       sessionStorage.setItem(HOME_SCROLL_KEY, String(window.scrollY || 0));
@@ -16,7 +18,7 @@ export default function ViewAllWork({ count }: { count: number }) {
   return (
     <div className="work-cta reveal">
       <Link className="btn btn-primary" href="/work" onClick={remember}>
-        View all work ({count}) <GeneralIcons.Arrow style={{ width: 16, height: 16 }} />
+        {t.projects.viewAll} ({count}) <GeneralIcons.Arrow style={{ width: 16, height: 16 }} />
       </Link>
     </div>
   );

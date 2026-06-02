@@ -3,25 +3,21 @@
 import { useEffect, useRef, useState } from "react";
 import { emitContact } from "./canvas/ContactCore";
 import { siteConfig } from "@/config/site";
+import { useT } from "./LocaleProvider";
 
-const PROJECT_TYPES = [
-  "Web app",
-  "Mobile app",
-  "SaaS platform",
-  "Backend / API",
-  "AI integration",
-  "Other",
-];
+type ProjectTypeKey = "web" | "mobile" | "saas" | "backend" | "ai" | "other";
+const PROJECT_TYPE_KEYS: ProjectTypeKey[] = ["web", "mobile", "saas", "backend", "ai", "other"];
 
 type Status = "idle" | "sending" | "sent";
 
 export default function ContactForm() {
+  const t = useT();
+  const f = t.contact.form;
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
-  const [projectType, setProjectType] = useState(PROJECT_TYPES[0]);
+  const [projectType, setProjectType] = useState<ProjectTypeKey>("web");
   const [status, setStatus] = useState<Status>("idle");
-  const [btnText, setBtnText] = useState("Send message");
   const [ref, setRef] = useState("REF-2026-AJ-····");
   const activity = useRef(0);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
@@ -46,7 +42,6 @@ export default function ContactForm() {
     e.preventDefault();
     if (status !== "idle") return;
     setStatus("sending");
-    setBtnText("Sending…");
     emitContact({ kind: "transmit" });
 
     fetch("/api/contact", {
@@ -69,20 +64,20 @@ export default function ContactForm() {
         noValidate
       >
         <div className="form-head">
-          <span className="form-title">Project enquiry</span>
+          <span className="form-title">{f.title}</span>
           <span className="form-id">{ref}</span>
         </div>
 
         <div className="field-grid">
           <div className="field">
             <label htmlFor="cf-name">
-              Name <span className="lbl-id">01</span>
+              {f.name} <span className="lbl-id">01</span>
             </label>
             <input
               id="cf-name"
               name="name"
               type="text"
-              placeholder="Your name"
+              placeholder={f.namePlaceholder}
               required
               value={name}
               onChange={(e) => { setName(e.target.value); onType(); }}
@@ -92,13 +87,13 @@ export default function ContactForm() {
           </div>
           <div className="field">
             <label htmlFor="cf-email">
-              Email <span className="lbl-id">02</span>
+              {f.email} <span className="lbl-id">02</span>
             </label>
             <input
               id="cf-email"
               name="email"
               type="email"
-              placeholder="you@company.com"
+              placeholder={f.emailPlaceholder}
               required
               value={email}
               onChange={(e) => { setEmail(e.target.value); onType(); }}
@@ -109,17 +104,17 @@ export default function ContactForm() {
 
           <div className="field full">
             <label>
-              Project type <span className="lbl-id">03</span>
+              {f.projectType} <span className="lbl-id">03</span>
             </label>
             <div className="project-types">
-              {PROJECT_TYPES.map((t) => (
+              {PROJECT_TYPE_KEYS.map((key) => (
                 <button
                   type="button"
-                  key={t}
-                  className={`chip${projectType === t ? " is-active" : ""}`}
-                  onClick={() => { setProjectType(t); emitContact({ kind: "pulse" }); }}
+                  key={key}
+                  className={`chip${projectType === key ? " is-active" : ""}`}
+                  onClick={() => { setProjectType(key); emitContact({ kind: "pulse" }); }}
                 >
-                  {t}
+                  {f.types[key]}
                 </button>
               ))}
             </div>
@@ -127,12 +122,12 @@ export default function ContactForm() {
 
           <div className="field full">
             <label htmlFor="cf-msg">
-              Project details <span className="lbl-id">04</span>
+              {f.details} <span className="lbl-id">04</span>
             </label>
             <textarea
               id="cf-msg"
               name="message"
-              placeholder="What are you building, and what's making it hard? Stack, timeline, and scope all help."
+              placeholder={f.detailsPlaceholder}
               maxLength={1000}
               value={message}
               onChange={(e) => { setMessage(e.target.value); onType(); }}
@@ -147,32 +142,30 @@ export default function ContactForm() {
 
         <div className="transmit-row">
           <div className="transmit-meta">
-            <span><span className="key">REPLIES</span> within ~1 day</span>
+            <span><span className="key">{f.repliesKey}</span> {f.repliesVal}</span>
             <span>·</span>
             <span>
-              <span className="key">BASED IN</span> {siteConfig.location} · {siteConfig.timezone}
+              <span className="key">{f.basedKey}</span> {siteConfig.location} · {siteConfig.timezone}
             </span>
           </div>
           <button type="submit" className="btn-transmit" disabled={status !== "idle"}>
-            {btnText} <span className="arrow">→</span>
+            {status === "sending" ? f.sending : f.send} <span className="arrow">→</span>
           </button>
         </div>
 
         <div className={`transmission-confirm${status === "sent" ? " show" : ""}`}>
           <div className="ring-icon">✓</div>
           <h3>
-            Message <em>sent.</em>
+            {f.sentHeadingA}
+            <em>{f.sentHeadingEm}</em>
           </h3>
-          <p>
-            Thanks for reaching out — I&apos;ll get back to you within one working day. Feel free to
-            email me directly in the meantime.
-          </p>
+          <p>{f.sentBody}</p>
           <div className="signal-meta">
-            <span>REF <b>{ref}</b></span>
+            <span>{f.sentRef} <b>{ref}</b></span>
             <span>·</span>
-            <span>STATUS <b>received</b></span>
+            <span>{f.sentStatus} <b>{f.sentStatusVal}</b></span>
             <span>·</span>
-            <span>REPLY <b>&lt; 24h</b></span>
+            <span>{f.sentReply} <b>&lt; 24h</b></span>
           </div>
         </div>
       </form>

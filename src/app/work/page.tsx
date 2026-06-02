@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import Topbar from "@/components/Topbar";
 import Projects from "@/components/Projects";
 import Footer from "@/components/Footer";
+import BackToHome from "@/components/BackToHome";
 import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
@@ -16,9 +16,7 @@ export default function WorkPage() {
       <Topbar base="/" />
       <main id="top" className="work-page">
         <div className="container work-top">
-          <Link className="back-link" href="/">
-            <span className="arrow">←</span> Back to home
-          </Link>
+          <BackToHome />
         </div>
         <Projects all />
         <Footer />
