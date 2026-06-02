@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { siteConfig } from "@/config/site";
+import { useLocale } from "./LocaleProvider";
 
 /**
  * Pre-homepage loading screen — a port of the made-by-abdullah v1 loader.
@@ -26,9 +27,9 @@ const POINTS = [
   "160 162.025278 191.444444 142.941536 223.555556 162.054287 254.777778 142.945268",
 ];
 
-const LABEL = "Loading";
-
 export default function Loader() {
+  const { t } = useLocale();
+  const LABEL = t.loader.label;
   // Plays on every fresh page load. (No session gate — a loading splash is
   // expected to appear on load; gating it made reloads skip the animation.)
   const [done, setDone] = useState(false);

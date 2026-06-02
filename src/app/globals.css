@@ -241,6 +241,17 @@ html[data-mode="light"] .topbar.scrolled { background: rgba(244,243,238,0.85); }
 .brand-name { font-size: 15px; }
 .brand-name b { font-weight: 600; }
 .brand-name span { color: var(--fg-muted); }
+/* Availability status dot, now sitting on the name (moved up from the CTA). */
+.brand-dot {
+  display: inline-block;
+  width: 7px; height: 7px;
+  border-radius: 999px;
+  margin-inline-end: 7px;
+  vertical-align: middle;
+  background: #6be38a;
+  box-shadow: 0 0 10px #6be38a;
+  animation: pulse 2s ease-out infinite;
+}
 
 .nav {
   display: flex;
@@ -290,9 +301,39 @@ html[data-mode="light"] .topbar.scrolled { background: rgba(244,243,238,0.85); }
 }
 @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.85)} }
 
+/* EN / AR language toggle — segmented pill in the header's trailing slot. */
+.lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--r-full);
+  overflow: hidden;
+  background: transparent;
+}
+.lang-toggle button {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  padding: 7px 14px;
+  color: var(--fg-muted);
+  background: transparent;
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-out),
+    background var(--dur-fast) var(--ease-out);
+  min-width: 40px;
+  text-align: center;
+}
+.lang-toggle button:hover { color: var(--fg); }
+.lang-toggle button.is-active {
+  color: var(--fg);
+  background: var(--accent-soft);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+/* The Arabic glyph reads better a touch larger. */
+.lang-toggle button:last-child { font-size: 15px; line-height: 1; }
+
 @media (max-width: 880px) {
   .nav { display: none; }
-  .topbar-cta { display: none; }
 }
 
 /* ===========================================================
@@ -565,53 +606,51 @@ html[data-mode="light"] .topbar.scrolled { background: rgba(244,243,238,0.85); }
   box-shadow: 0 0 8px #6be38a;
 }
 
-.stack-list { position: relative; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--hairline); border-radius: var(--r-lg); overflow: hidden; }
-.stack-item {
+/* Stack grouped by category — a label column + wrapping icon chips per row. */
+.stack-cats { position: relative; display: flex; flex-direction: column; gap: 1px; background: var(--hairline); border-radius: var(--r-lg); overflow: hidden; }
+.stack-cat {
   background: var(--bg-elev-1);
   padding: var(--s-4) var(--s-5);
-  display: flex; align-items: center; gap: var(--s-3);
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--fg);
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr);
+  align-items: start;
+  gap: var(--s-4);
   transition: background var(--dur-fast);
 }
-.stack-item:hover { background: var(--bg-elev-2); }
-.stack-item .glyph {
-  width: 28px; height: 28px;
-  display: grid; place-items: center;
-  border: 1px solid var(--hairline-strong);
-  border-radius: 6px;
+.stack-cat:hover { background: var(--bg-elev-2); }
+.stack-cat-label {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: var(--accent);
-  font-family: var(--font-display);
-  font-size: 14px;
-  font-weight: 500;
-  flex-shrink: 0;
+  padding-top: 6px;
 }
-.stack-item .meta { color: var(--fg-dim); margin-left: auto; font-size: 10.5px; }
-.stack-foot {
-  margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--hairline);
-  display: flex; justify-content: space-between; align-items: center;
-  font-family: var(--font-mono); font-size: 11px; color: var(--fg-muted); letter-spacing: .08em;
-  gap: 12px; flex-wrap: wrap;
-}
-.stack-also { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
-.also-chip {
+.stack-cat-items { display: flex; flex-wrap: wrap; gap: 7px; }
+.stack-chip {
   display: inline-flex; align-items: center; gap: 7px;
-  padding: 5px 10px 5px 7px;
+  padding: 4px 10px 4px 6px;
   border: 1px solid var(--hairline-strong);
   border-radius: var(--r-full);
-  background: var(--bg-elev-1);
-  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0;
+  background: var(--bg-elev-2);
+  font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0;
   color: var(--fg);
+  white-space: nowrap;
+  cursor: default;
   transition: background var(--dur-fast), border-color var(--dur-fast);
 }
-.also-chip:hover { background: var(--bg-elev-2); border-color: var(--accent); }
-.also-chip .glyph {
+.stack-chip:hover { border-color: var(--accent); }
+.stack-chip .glyph {
   width: 20px; height: 20px;
   display: grid; place-items: center;
   color: var(--accent); flex-shrink: 0;
 }
-.also-chip .glyph svg { width: 14px; height: 14px; }
+.stack-chip .glyph svg { width: 14px; height: 14px; }
+
+@media (max-width: 480px) {
+  .stack-cat { grid-template-columns: 1fr; gap: var(--s-2); }
+  .stack-cat-label { padding-top: 0; }
+}
 
 /* ===========================================================
    Services
@@ -1035,7 +1074,36 @@ html[data-mode="light"] .topbar.scrolled { background: rgba(244,243,238,0.85); }
   gap: var(--s-6);
   margin-top: var(--s-16);
 }
-@media (max-width: 900px) { .testimonials { grid-template-columns: 1fr; } }
+/* On tablet & mobile the three cards become a horizontal, swipable scroll-snap
+   carousel instead of cramming into a 3-up grid (which overflowed on tablet).
+   The breakpoint covers tablet landscape (≈1024px) too, so anything below a
+   true desktop swipes one card per view, snapping cleanly. */
+@media (max-width: 1024px) {
+  .testimonials {
+    display: flex;
+    grid-template-columns: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: var(--s-4);
+    /* Bleed to the gutter edges so the next card peeks in. */
+    margin-inline: calc(-1 * var(--gutter));
+    padding-inline: var(--gutter);
+    scroll-padding-inline: var(--gutter);
+  }
+  .testimonials::-webkit-scrollbar { display: none; }
+  .testimonials .test-card {
+    scroll-snap-align: start;
+    /* One card per view on phones; a touch narrower on wider tablets so two
+       fit and the next peeks. */
+    flex: 0 0 88%;
+    min-width: 0;
+  }
+}
+@media (min-width: 640px) and (max-width: 1024px) {
+  .testimonials .test-card { flex-basis: 60%; }
+}
 .test-card {
   background: var(--bg-elev-1);
   border: 1px solid var(--hairline);
@@ -1066,8 +1134,6 @@ html[data-mode="light"] .topbar.scrolled { background: rgba(244,243,238,0.85); }
   display: grid; place-items: center;
   font-size: 14px;
 }
-.test-card .author .who { font-size: 14px; color: var(--fg); }
-.test-card .author .role { font-size: 12px; color: var(--fg-muted); }
 
 /* ===========================================================
    Approach
@@ -1650,8 +1716,6 @@ html[data-mode="light"] .client-logo:hover img { opacity: 0.9; }
 /* ===========================================================
    Brand icons (stack list, project tags, social channels)
    =========================================================== */
-.stack-item .glyph svg { width: 16px; height: 16px; }
-
 .proj-tech .tag {
   display: inline-flex;
   align-items: center;
@@ -1661,20 +1725,21 @@ html[data-mode="light"] .client-logo:hover img { opacity: 0.9; }
 
 .contact-channels a svg { width: 15px; height: 15px; }
 
-/* Real client logo as the testimonial author mark — no circle, small monochrome
-   logo matching the marquee treatment, left-aligned with the name. */
+/* Real client logo as the testimonial footer mark — no circle, small monochrome
+   logo matching the marquee treatment. Every logo fits inside an identical fixed
+   box so they all read as the same size regardless of their aspect ratio (a wide
+   wordmark and a square mark both fit the same footprint, none overpowers). */
 .test-card .author .author-logo {
   flex: 0 0 auto;
   display: inline-flex;
   align-items: center;
-  height: 26px;
-  max-width: 96px;
+  justify-content: flex-start;
 }
 .test-card .author .author-logo img {
-  height: 22px;
-  width: auto;
-  max-width: 96px;
+  width: 50px;
+  height: 32px;
   object-fit: contain;
+  object-position: left center;
   filter: brightness(0) invert(1);
   opacity: 0.85;
 }
@@ -1756,3 +1821,35 @@ html[data-mode="light"] .test-card .author .author-logo img {
   /* No draw animation runs, so show the mark statically (fully drawn). */
   .loader-mark { filter: none; opacity: 1; }
 }
+
+/* ===========================================================
+   RTL (Arabic) — direction-aware overrides
+   The layout is mostly flex/grid which mirrors automatically under
+   dir="rtl"; these rules flip the few physically-positioned elements,
+   directional glyphs, and text alignment that don't auto-mirror.
+   =========================================================== */
+[dir="rtl"] body { text-align: right; }
+
+/* Fixed / absolutely-positioned furniture → mirror to the opposite edge. */
+[dir="rtl"] .telemetry-hud { right: auto; left: var(--gutter); }
+[dir="rtl"] .layer-rail { right: auto; left: clamp(12px, 1.6vw, 28px); }
+[dir="rtl"] .hero-status { left: auto; right: var(--gutter); }
+[dir="rtl"] .theme-fab { right: auto; left: clamp(16px, 2vw, 28px); }
+[dir="rtl"] .theme-panel { right: auto; left: clamp(16px, 2vw, 28px); }
+[dir="rtl"] .field .char-count { right: auto; left: 12px; }
+[dir="rtl"] .transmission-confirm { text-align: right; }
+
+/* Marquee edge fades: swap which side fades (gradients are physical). */
+[dir="rtl"] .clients .marquee-wrap::before { left: auto; right: 0; background: linear-gradient(-90deg, var(--bg), transparent); }
+[dir="rtl"] .clients .marquee-wrap::after { right: auto; left: 0; background: linear-gradient(90deg, var(--bg), transparent); }
+
+/* Directional arrows/glyphs point the other way in RTL. */
+[dir="rtl"] .arrow { display: inline-block; transform: scaleX(-1); }
+[dir="rtl"] .btn:hover .arrow,
+[dir="rtl"] .btn-transmit:hover .arrow { transform: scaleX(-1) translateX(4px); }
+[dir="rtl"] .project-types .chip.is-active::before { margin-right: 0; margin-left: 2px; }
+[dir="rtl"] .back-link .arrow { transform: scaleX(-1); }
+
+/* The theme-panel close button + sections read right-aligned. */
+[dir="rtl"] .tp-head,
+[dir="rtl"] .tp-section { text-align: right; }

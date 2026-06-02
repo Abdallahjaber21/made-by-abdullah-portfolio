@@ -1,11 +1,15 @@
+"use client";
+
 import { PROJECTS } from "@/data/projects";
 import ProjectRow from "./ProjectRow";
 import ViewAllWork from "./ViewAllWork";
+import { useT } from "./LocaleProvider";
 
 const FEATURED = 3;
 
 /** `all` renders every project (the /work page); otherwise a featured subset. */
 export default function Projects({ all = false }: { all?: boolean }) {
+  const t = useT();
   const list = all ? PROJECTS : PROJECTS.slice(0, FEATURED);
 
   return (
@@ -13,12 +17,22 @@ export default function Projects({ all = false }: { all?: boolean }) {
       <div className="container">
         <div className="section-head">
           <div>
-            <span className="eyebrow reveal">03 · {all ? "All work" : "Recent work"}</span>
+            <span className="eyebrow reveal">
+              {all ? t.projects.eyebrowAll : t.projects.eyebrowRecent}
+            </span>
             <h2 className="reveal" style={{ marginTop: 18 }}>
               {all ? (
-                <>Everything I&apos;ve<br />built and shipped.</>
+                <>
+                  {t.projects.headingAllA}
+                  <br />
+                  {t.projects.headingAllB}
+                </>
               ) : (
-                <>Recent work,<br />built and shipped.</>
+                <>
+                  {t.projects.headingRecentA}
+                  <br />
+                  {t.projects.headingRecentB}
+                </>
               )}
             </h2>
           </div>

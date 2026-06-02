@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { LocaleProvider } from "@/components/LocaleProvider";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
 import Loader from "@/components/Loader";
 import SmoothScroll from "@/components/motion/SmoothScroll";
@@ -28,7 +29,8 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-// Apply the stored theme before first paint to avoid a flash of the default.
+// Apply the stored theme + locale before first paint to avoid a flash of the
+// default (wrong accent / wrong language direction).
 const noFlash = `(function(){try{
 var deep={"#a160c5":"#7a3d9b","#7a3d9b":"#3d1f55","#8c93cf":"#5d63a8","#5d8dff":"#3358cf","#22d3ee":"#0e8aa2","#d62d49":"#7c1424"};
 var a=(localStorage.getItem('mba.accent')||'#d62d49').toLowerCase();
@@ -41,12 +43,16 @@ r.style.setProperty('--accent-deep',d);
 r.style.setProperty('--accent-glow',a+ax(0.55));
 r.style.setProperty('--accent-soft',a+ax(0.12));
 r.style.setProperty('--grad-purple','linear-gradient(135deg, '+d+' 0%, '+a+' 100%)');
+var loc=localStorage.getItem('mba.locale')==='ar'?'ar':'en';
+r.setAttribute('lang',loc);
+r.setAttribute('dir',loc==='ar'?'rtl':'ltr');
 }catch(e){}})();`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="en"
+      dir="ltr"
       data-mode="dark"
       suppressHydrationWarning
       className={`${sans.variable} ${mono.variable}`}
@@ -59,11 +65,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </noscript>
       </head>
       <body>
-        <ThemeProvider>
-          <Loader />
-          {children}
-          <ThemeSwitcher />
-        </ThemeProvider>
+        <LocaleProvider>
+          <ThemeProvider>
+            <Loader />
+            {children}
+            <ThemeSwitcher />
+          </ThemeProvider>
+        </LocaleProvider>
         <SmoothScroll />
       </body>
     </html>

@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useT } from "./LocaleProvider";
 
 const fmt = (n: number) => n.toLocaleString("en-US");
 
 export default function TelemetryHud() {
+  const t = useT();
   const [tel, setTel] = useState({
     rps: "48,210",
     p99: "11.4ms",
@@ -59,17 +61,17 @@ export default function TelemetryHud() {
   return (
     <aside className="telemetry-hud reveal" aria-hidden="true">
       <div className="hud-head">
-        <span>SYSTEM · LIVE</span>
+        <span>{t.hud.system}</span>
         <span className="pulse">
           <span className="dot" />
-          OK
+          {t.hud.ok}
         </span>
       </div>
-      <div className="hud-row"><span className="k">rps</span><span className="v">{tel.rps}</span></div>
-      <div className="hud-row"><span className="k">p99 latency</span><span className="v accent">{tel.p99}</span></div>
-      <div className="hud-row"><span className="k">edge nodes</span><span className="v">{tel.nodes}</span></div>
-      <div className="hud-row"><span className="k">error rate</span><span className="v success">{tel.err}</span></div>
-      <div className="hud-row"><span className="k">queue depth</span><span className="v">{tel.q}</span></div>
+      <div className="hud-row"><span className="k">{t.hud.rps}</span><span className="v">{tel.rps}</span></div>
+      <div className="hud-row"><span className="k">{t.hud.p99}</span><span className="v accent">{tel.p99}</span></div>
+      <div className="hud-row"><span className="k">{t.hud.nodes}</span><span className="v">{tel.nodes}</span></div>
+      <div className="hud-row"><span className="k">{t.hud.err}</span><span className="v success">{tel.err}</span></div>
+      <div className="hud-row"><span className="k">{t.hud.queue}</span><span className="v">{tel.q}</span></div>
       <div className="spark" ref={sparkRef} aria-hidden="true" />
     </aside>
   );

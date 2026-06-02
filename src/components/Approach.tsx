@@ -1,86 +1,42 @@
-interface Statement {
-  idx: string;
-  /** rendered with <em> emphasis spans pre-split */
-  parts: Array<{ text: string; em?: boolean }>;
-}
+"use client";
 
-const STATEMENTS: Statement[] = [
-  {
-    idx: "/01",
-    parts: [
-      { text: "Clean architecture is how you " },
-      { text: "scale a team", em: true },
-      { text: ", not just a system. Everything else follows from the boundaries." },
-    ],
-  },
-  {
-    idx: "/02",
-    parts: [
-      { text: "Performance is a " },
-      { text: "feature", em: true },
-      { text: ", not an afterthought. Set the budget; defend it like a deadline." },
-    ],
-  },
-  {
-    idx: "/03",
-    parts: [
-      { text: "Simplicity beats cleverness. The " },
-      { text: "obvious", em: true },
-      { text: " solution is usually the one that survives." },
-    ],
-  },
-  {
-    idx: "/04",
-    parts: [
-      { text: "Maintainability outlives trends. Optimize for the " },
-      { text: "engineer reading this", em: true },
-      { text: " in two years." },
-    ],
-  },
-  {
-    idx: "/05",
-    parts: [
-      { text: "AI " },
-      { text: "amplifies", em: true },
-      { text: " engineers; it doesn't replace engineering. The judgement stays human." },
-    ],
-  },
-  {
-    idx: "/06",
-    parts: [
-      { text: "Good software is " },
-      { text: "understood", em: true },
-      { text: " before it is optimized. Clarity first, speed second." },
-    ],
-  },
-];
+import { useT } from "./LocaleProvider";
 
 export default function Approach() {
+  const t = useT();
+  const s = t.approach.statements;
+
+  const STATEMENTS: Array<{ idx: string; pre: string; em: string; post: string }> = [
+    { idx: "/01", pre: s.s1a, em: s.s1em, post: s.s1b },
+    { idx: "/02", pre: s.s2a, em: s.s2em, post: s.s2b },
+    { idx: "/03", pre: s.s3a, em: s.s3em, post: s.s3b },
+    { idx: "/04", pre: s.s4a, em: s.s4em, post: s.s4b },
+    { idx: "/05", pre: s.s5a, em: s.s5em, post: s.s5b },
+    { idx: "/06", pre: s.s6a, em: s.s6em, post: s.s6b },
+  ];
+
   return (
     <section id="approach" data-screen-label="Approach" className="approach">
       <div className="approach-grid-bg" />
       <div className="container">
         <div className="section-head">
           <div>
-            <span className="eyebrow reveal">05 · Engineering attitude</span>
+            <span className="eyebrow reveal">{t.approach.eyebrow}</span>
             <h2 className="reveal" style={{ marginTop: 18 }}>
-              How I build.
+              {t.approach.heading}
             </h2>
           </div>
-          <p className="lead reveal">
-            Six convictions, learned across seven years of shipping. They are why my code reads the
-            way it does.
-          </p>
+          <p className="lead reveal">{t.approach.lead}</p>
         </div>
 
         <div className="approach-statements">
-          {STATEMENTS.map((s) => (
-            <div className="statement" key={s.idx}>
-              <span className="idx">{s.idx}</span>
+          {STATEMENTS.map((st) => (
+            <div className="statement" key={st.idx}>
+              <span className="idx">{st.idx}</span>
               <div>
-                {s.parts.map((p, i) =>
-                  p.em ? <em key={i}>{p.text}</em> : <span key={i}>{p.text}</span>
-                )}
+                <span>{st.pre}</span>
+                <em>{st.em}</em>
+                <span>{st.post}</span>
               </div>
             </div>
           ))}

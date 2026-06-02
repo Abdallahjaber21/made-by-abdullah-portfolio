@@ -1,9 +1,13 @@
+"use client";
+
 import ContactCore from "./canvas/ContactCore";
 import ContactForm from "./ContactForm";
 import { siteConfig, activeSocials } from "@/config/site";
 import { SocialIcons, GeneralIcons, type SocialName } from "./icons";
+import { useT } from "./LocaleProvider";
 
 export default function Contact() {
+  const t = useT();
   const socials = activeSocials();
   return (
     <section id="contact" data-screen-label="Contact" className="contact-cinematic">
@@ -12,22 +16,21 @@ export default function Contact() {
       <div className="contact-stage">
         <div className="channel-meta reveal">
           <span className="dot" />
-          <span>GET IN TOUCH · /06</span>
+          <span>{t.contact.meta}</span>
         </div>
 
         <h2 className="establish reveal">
-          Let&apos;s <em>build</em> something.
+          {t.contact.headingA}
+          <em>{t.contact.headingEm}</em>
+          {t.contact.headingB}
         </h2>
-        <p className="establish-sub reveal">
-          Tell me about the product, the system, or the problem you&apos;re solving — I&apos;ll reply
-          within a day.
-        </p>
+        <p className="establish-sub reveal">{t.contact.sub}</p>
 
         <div className="handshake reveal">
           <span className="hs-dot" />
-          <span className="hs-status">AVAILABLE FOR WORK</span>
+          <span className="hs-status">{t.contact.available}</span>
           <span className="hs-sep">·</span>
-          <span>REPLIES IN ~1 DAY</span>
+          <span>{t.contact.replies}</span>
           <span className="hs-sep">·</span>
           <span>
             {siteConfig.location.toUpperCase()} · {siteConfig.timezone}
@@ -50,7 +53,7 @@ export default function Contact() {
           })}
           {siteConfig.cvUrl && (
             <a href={siteConfig.cvUrl} target="_blank" rel="noopener noreferrer">
-              <GeneralIcons.Download /> Résumé / CV
+              <GeneralIcons.Download /> {t.contact.resume}
             </a>
           )}
         </div>

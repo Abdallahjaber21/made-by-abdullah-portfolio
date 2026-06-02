@@ -1,7 +1,6 @@
 import type { Project } from "@/types/card";
 
 /**
- * The four projects carried over from the original made-by-abdullah build.
  * Descriptions / stack are verbatim; type-labels, tags, stats and per-shot
  * captions are added to fill out the Portfolio's richer project layout.
  */
@@ -23,13 +22,13 @@ export const PROJECTS: Project[] = [
     projectUrl: "https://apps.apple.com/us/app/%D8%B3%D9%85%D8%B1/id6736710369",
     urlLabel: "samar.com",
     shots: [
-      { src: "/assets/projects/samar/home.png", label: "HOME", sub: "Lobby" },
-      { src: "/assets/projects/samar/game.png", label: "GAME", sub: "Live round" },
-      { src: "/assets/projects/samar/questions.png", label: "QUESTIONS", sub: "Trivia deck" },
-      { src: "/assets/projects/samar/winner.png", label: "WINNER", sub: "Results" },
-      { src: "/assets/projects/samar/shop.png", label: "SHOP", sub: "Power-ups" },
-      { src: "/assets/projects/samar/profile.png", label: "PROFILE", sub: "Player" },
-      { src: "/assets/projects/samar/login.png", label: "LOGIN", sub: "Auth" },
+      { src: "/assets/projects/samar/home.png", label: "HOME"},
+      { src: "/assets/projects/samar/game.png", label: "GAME"},
+      { src: "/assets/projects/samar/questions.png", label: "QUESTIONS"},
+      { src: "/assets/projects/samar/winner.png", label: "WINNER"},
+      { src: "/assets/projects/samar/shop.png", label: "SHOP"},
+      { src: "/assets/projects/samar/profile.png", label: "PROFILE"},
+      { src: "/assets/projects/samar/login.png", label: "LOGIN"},
     ],
   },
   {
@@ -47,10 +46,10 @@ export const PROJECTS: Project[] = [
     projectType: "web",
     urlLabel: "saxon · pos dashboard",
     shots: [
-      { src: "/assets/projects/saxon/home.png", label: "DASHBOARD", sub: "Overview" },
-      { src: "/assets/projects/saxon/transactions.png", label: "TRANSACTIONS", sub: "Sales" },
-      { src: "/assets/projects/saxon/products.png", label: "PRODUCTS", sub: "Inventory" },
-      { src: "/assets/projects/saxon/barcodes.png", label: "BARCODES", sub: "Labels" },
+      { src: "/assets/projects/saxon/home.png", label: "DASHBOARD"},
+      { src: "/assets/projects/saxon/transactions.png", label: "TRANSACTIONS"},
+      { src: "/assets/projects/saxon/products.png", label: "PRODUCTS"},
+      { src: "/assets/projects/saxon/barcodes.png", label: "BARCODES"},
     ],
   },
   {
@@ -69,11 +68,11 @@ export const PROJECTS: Project[] = [
     projectType: "mobile",
     orientation: "portrait",
     shots: [
-      { src: "/assets/projects/keep-property/home.jpg", label: "HOME", sub: "Discover" },
-      { src: "/assets/projects/keep-property/properties.jpg", label: "PROPERTIES", sub: "Listings" },
-      { src: "/assets/projects/keep-property/real_estate.jpg", label: "REAL ESTATE", sub: "Detail" },
-      { src: "/assets/projects/keep-property/dues.jpg", label: "DUES", sub: "Payments" },
-      { src: "/assets/projects/keep-property/login.jpg", label: "LOGIN", sub: "Auth" },
+      { src: "/assets/projects/keep-property/home.jpg", label: "HOME"},
+      { src: "/assets/projects/keep-property/properties.jpg", label: "PROPERTIES"},
+      { src: "/assets/projects/keep-property/real_estate.jpg", label: "REAL ESTATE"},
+      { src: "/assets/projects/keep-property/dues.jpg", label: "DUES"},
+      { src: "/assets/projects/keep-property/login.jpg", label: "LOGIN"},
     ],
   },
   {
@@ -91,12 +90,11 @@ export const PROJECTS: Project[] = [
     projectType: "mobile",
     orientation: "portrait",
     shots: [
-      { src: "/assets/projects/pepsi/home.png", label: "HOME", sub: "Storefront" },
-      { src: "/assets/projects/pepsi/categories.png", label: "CATEGORIES", sub: "Browse" },
-      { src: "/assets/projects/pepsi/subcategories.png", label: "SUBCATEGORIES", sub: "Filter" },
-      { src: "/assets/projects/pepsi/shop.png", label: "SHOP", sub: "Cart" },
-      { src: "/assets/projects/pepsi/orders.png", label: "ORDERS", sub: "History" },
-      { src: "/assets/projects/pepsi/profile.png", label: "PROFILE", sub: "Account" },
+      { src: "/assets/projects/pepsi/home.png", label: "HOME"},
+      { src: "/assets/projects/pepsi/subcategories.png", label: "CATEGORIES"},
+      { src: "/assets/projects/pepsi/shop.png", label: "SHOP"},
+      { src: "/assets/projects/pepsi/orders.png", label: "ORDERS"},
+      { src: "/assets/projects/pepsi/profile.png", label: "PROFILE"},
     ],
   },
   {
@@ -114,11 +112,11 @@ export const PROJECTS: Project[] = [
     projectType: "mobile",
     orientation: "portrait",
     shots: [
-      { src: "/assets/projects/tree-treat/home.webp", label: "HOME", sub: "Discover" },
-      { src: "/assets/projects/tree-treat/my_trees.webp", label: "MY TREES", sub: "Collection" },
-      { src: "/assets/projects/tree-treat/single.webp", label: "TREE", sub: "Detail" },
-      { src: "/assets/projects/tree-treat/saved.webp", label: "SAVED", sub: "Favourites" },
-      { src: "/assets/projects/tree-treat/login.webp", label: "LOGIN", sub: "Auth" },
+      { src: "/assets/projects/tree-treat/home.webp", label: "HOME"},
+      { src: "/assets/projects/tree-treat/my_trees.webp", label: "MY TREES"},
+      { src: "/assets/projects/tree-treat/single.webp", label: "TREE"},
+      { src: "/assets/projects/tree-treat/saved.webp", label: "SAVED"},
+      { src: "/assets/projects/tree-treat/login.webp", label: "LOGIN"},
     ],
   },
   {
@@ -136,12 +134,12 @@ export const PROJECTS: Project[] = [
     projectType: "mobile",
     orientation: "portrait",
     shots: [
-      { src: "/assets/projects/zakey/home.webp", label: "HOME", sub: "Storefront" },
-      { src: "/assets/projects/zakey/categories.webp", label: "CATEGORIES", sub: "Browse" },
-      { src: "/assets/projects/zakey/single.webp", label: "PRODUCT", sub: "Detail" },
-      { src: "/assets/projects/zakey/supplier/add.webp", label: "SUPPLIER", sub: "Add product" },
-      { src: "/assets/projects/zakey/supplier/categories.webp", label: "SUPPLIER", sub: "Categories" },
-      { src: "/assets/projects/zakey/supplier/flash.webp", label: "SUPPLIER", sub: "Flash deals" },
+      { src: "/assets/projects/zakey/home.webp", label: "HOME"},
+      { src: "/assets/projects/zakey/categories.webp", label: "CATEGORIES"},
+      { src: "/assets/projects/zakey/single.webp", label: "PRODUCT"},
+      { src: "/assets/projects/zakey/supplier/add.webp", label: "SUPPLIER"},
+      { src: "/assets/projects/zakey/supplier/categories.webp", label: "SUPPLIER"},
+      { src: "/assets/projects/zakey/supplier/flash.webp", label: "SUPPLIER"},
     ],
   },
 

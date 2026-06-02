@@ -1,11 +1,15 @@
+"use client";
+
 import { siteConfig } from "@/config/site";
+import { useLocale } from "./LocaleProvider";
 
 export default function Footer() {
+  const { t } = useLocale();
   return (
     <footer className="cinematic-footer">
-      <span>© 2026 · {siteConfig.name}</span>
+      <span>{t.footer.rights} · {siteConfig.name}</span>
       <span>
-        {siteConfig.role} · {siteConfig.location}
+        {t.header.role} · {siteConfig.location}
       </span>
     </footer>
   );
