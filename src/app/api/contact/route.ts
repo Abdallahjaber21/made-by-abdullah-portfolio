@@ -1,5 +1,17 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+import { rateLimit } from "@/lib/rate-limit";
+
+// Per-IP cap: 5 enquiries / 10 minutes. Enough for genuine retries, not abuse.
+const RATE_LIMIT = 5;
+const RATE_WINDOW_MS = 10 * 60 * 1000;
+
+/** Best-effort client IP from proxy headers (Vercel sets x-forwarded-for). */
+function clientIp(req: Request): string {
+  const xff = req.headers.get("x-forwarded-for");
+  if (xff) return xff.split(",")[0].trim();
+  return req.headers.get("x-real-ip")?.trim() || "unknown";
+}
 
 /**
  * Contact endpoint — delivers enquiries via Gmail SMTP (nodemailer).
@@ -37,6 +49,15 @@ export async function POST(req: Request) {
   // Honeypot: real users never fill a hidden field. Pretend success to bots.
   if (typeof data.company === "string" && data.company.trim().length > 0) {
     return NextResponse.json({ ok: true });
+  }
+
+  // Rate limit by IP — after the honeypot, before any validation / SMTP work.
+  const limit = rateLimit(`contact:${clientIp(req)}`, RATE_LIMIT, RATE_WINDOW_MS);
+  if (!limit.ok) {
+    return NextResponse.json(
+      { ok: false, error: "rate limited" },
+      { status: 429, headers: { "Retry-After": String(limit.retryAfter) } }
+    );
   }
 
   const name = String(data.name ?? "").trim();

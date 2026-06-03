@@ -1,5 +1,6 @@
 "use client";
 
+import { track } from "@vercel/analytics";
 import ContactCore from "./canvas/ContactCore";
 import ContactForm from "./ContactForm";
 import { siteConfig, activeSocials } from "@/config/site";
@@ -52,7 +53,12 @@ export default function Contact() {
             );
           })}
           {siteConfig.cvUrl && (
-            <a href={siteConfig.cvUrl} target="_blank" rel="noopener noreferrer">
+            <a
+              href={siteConfig.cvUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => track("cv_download")}
+            >
               <GeneralIcons.Download /> {t.contact.resume}
             </a>
           )}

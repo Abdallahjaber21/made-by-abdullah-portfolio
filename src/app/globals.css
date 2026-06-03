@@ -1913,3 +1913,48 @@ html[data-mode="light"] .test-card .author .author-logo img {
 /* The theme-panel close button + sections read right-aligned. */
 [dir="rtl"] .tp-head,
 [dir="rtl"] .tp-section { text-align: right; }
+
+/* ===========================================================
+   Status pages (404 / error) — reuse existing tokens & buttons
+   =========================================================== */
+.status-page {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--s-16) var(--gutter);
+}
+.status-inner { max-width: 560px; }
+.status-code {
+  font-family: var(--font-mono);
+  font-size: clamp(64px, 14vw, 132px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  background: var(--grad-purple);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.status-page h1 {
+  font-size: clamp(22px, 4vw, 30px);
+  margin: var(--s-6) 0 var(--s-3);
+  color: var(--fg);
+}
+.status-page p { color: var(--fg-muted); margin-bottom: var(--s-8); }
+.status-actions {
+  display: flex;
+  gap: var(--s-3);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.status-ref {
+  margin-top: var(--s-8);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  opacity: 0.7;
+}

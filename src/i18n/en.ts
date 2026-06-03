@@ -214,6 +214,7 @@ export const en = {
       sentStatusVal: "received",
       sentReply: "REPLY",
       error: "Something went wrong sending your message. Please try again, or email me directly.",
+      rateLimited: "You've sent a few messages already — please wait a moment and try again, or email me directly.",
       retry: "Try again",
       errNameRequired: "Please enter your name.",
       errEmailRequired: "Please enter your email.",

@@ -24,6 +24,13 @@ export const siteConfig = {
   cvUrl: "/abdallah-jaber-cv.pdf",
 
   /**
+   * Canonical production origin — drives metadataBase, the sitemap, robots,
+   * canonical links and absolute OG image URLs. Override per-deploy with
+   * NEXT_PUBLIC_SITE_URL (no trailing slash). One place to change the domain.
+   */
+  url: (process.env.NEXT_PUBLIC_SITE_URL ?? "https://made-by-abdullah.vercel.app").replace(/\/$/, ""),
+
+  /**
    * Blank URLs are hidden
    */
   socials: [

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { track } from "@vercel/analytics";
 import { emitContact } from "./canvas/ContactCore";
 import { siteConfig } from "@/config/site";
 import { useT } from "./LocaleProvider";
@@ -8,7 +9,7 @@ import { useT } from "./LocaleProvider";
 type ProjectTypeKey = "web" | "mobile" | "saas" | "backend" | "ai" | "other";
 const PROJECT_TYPE_KEYS: ProjectTypeKey[] = ["web", "mobile", "saas", "backend", "ai", "other"];
 
-type Status = "idle" | "sending" | "sent" | "error";
+type Status = "idle" | "sending" | "sent" | "error" | "rate-limited";
 type FieldKey = "name" | "email" | "message";
 type FieldErrors = Partial<Record<FieldKey, string>>;
 
@@ -28,6 +29,7 @@ export default function ContactForm() {
   const [touched, setTouched] = useState<Partial<Record<FieldKey, boolean>>>({});
   const [ref, setRef] = useState("REF-2026-AJ-····");
   const activity = useRef(0);
+  const startedTracked = useRef(false); // fire "contact_started" only once
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   useEffect(() => {
@@ -59,7 +61,13 @@ export default function ContactForm() {
     setErrors((prev) => ({ ...prev, [field]: e[field] }));
   };
 
-  const onFieldFocus = () => emitContact({ kind: "activation", level: 0.45 });
+  const onFieldFocus = () => {
+    emitContact({ kind: "activation", level: 0.45 });
+    if (!startedTracked.current) {
+      startedTracked.current = true;
+      track("contact_started");
+    }
+  };
   const onFieldBlur = () => {
     const filled = [name, email, message].some((v) => v.trim().length > 0);
     emitContact({ kind: "activation", level: filled ? 0.2 : 0 });
@@ -97,10 +105,19 @@ export default function ContactForm() {
         }),
         sleep(1200),
       ]);
-      if (res.ok) setStatus("sent");
-      else setStatus("error");
+      if (res.ok) {
+        setStatus("sent");
+        track("contact_submitted", { projectType });
+      } else if (res.status === 429) {
+        setStatus("rate-limited");
+        track("contact_failed", { reason: "rate_limited" });
+      } else {
+        setStatus("error");
+        track("contact_failed", { reason: `http_${res.status}` });
+      }
     } catch {
       setStatus("error");
+      track("contact_failed", { reason: "network" });
     }
   };
 
@@ -219,9 +236,9 @@ export default function ContactForm() {
           </div>
         </div>
 
-        {status === "error" && (
+        {(status === "error" || status === "rate-limited") && (
           <p className="form-error" role="alert">
-            {f.error}
+            {status === "rate-limited" ? f.rateLimited : f.error}
           </p>
         )}
 
@@ -238,7 +255,11 @@ export default function ContactForm() {
             className="btn-transmit"
             disabled={status === "sending" || status === "sent"}
           >
-            {status === "sending" ? f.sending : status === "error" ? f.retry : f.send}{" "}
+            {status === "sending"
+              ? f.sending
+              : status === "error" || status === "rate-limited"
+              ? f.retry
+              : f.send}{" "}
             <span className="arrow">→</span>
           </button>
         </div>

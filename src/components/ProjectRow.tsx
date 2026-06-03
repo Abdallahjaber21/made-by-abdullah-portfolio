@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
+import { track } from "@vercel/analytics";
 import type { Project } from "@/types/card";
 import { GeneralIcons, stackIcon } from "./icons";
 import { useT } from "./LocaleProvider";
@@ -137,7 +138,13 @@ export default function ProjectRow({ project }: { project: Project }) {
         </div>
 
         {project.projectUrl && (
-          <a className="proj-link" href={project.projectUrl} target="_blank" rel="noopener noreferrer">
+          <a
+            className="proj-link"
+            href={project.projectUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => track("project_opened", { title: project.title })}
+          >
             {t.projects.visit} <GeneralIcons.External style={{ width: 14, height: 14 }} />
           </a>
         )}

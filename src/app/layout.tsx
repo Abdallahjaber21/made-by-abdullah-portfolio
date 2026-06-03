@@ -6,20 +6,50 @@ import { LocaleProvider } from "@/components/LocaleProvider";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
 import Loader from "@/components/Loader";
 import SmoothScroll from "@/components/motion/SmoothScroll";
+import JsonLd from "@/components/JsonLd";
 import { Analytics } from "@vercel/analytics/next";
 import { siteConfig } from "@/config/site";
 
 const sans = Geist({ subsets: ["latin"], variable: "--font-geist-sans", display: "swap" });
 const mono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono", display: "swap" });
 
+const description =
+  "Staff software engineer building and scaling SaaS platforms, backend systems, and AI-powered products. Seven-plus years across startups, SaaS, and enterprise software.";
+
 export const metadata: Metadata = {
-  title: `${siteConfig.name} — ${siteConfig.role}`,
-  description:
-    "Staff software engineer building and scaling SaaS platforms, backend systems, and AI-powered products. Seven-plus years across startups, SaaS, and enterprise software.",
+  metadataBase: new URL(siteConfig.url),
+  title: {
+    default: `${siteConfig.name} — ${siteConfig.role}`,
+    template: `%s — ${siteConfig.name}`,
+  },
+  description,
+  applicationName: siteConfig.name,
+  authors: [{ name: siteConfig.name, url: siteConfig.url }],
+  creator: siteConfig.name,
+  keywords: [
+    "Abdullah Jaber",
+    "Staff Software Engineer",
+    "Software Engineer",
+    "SaaS",
+    "Backend engineering",
+    "Yii2",
+    "Flutter",
+    "Next.js",
+    "Lebanon",
+  ],
+  alternates: { canonical: "/" },
   openGraph: {
     title: `${siteConfig.name} — ${siteConfig.role}`,
     description: "Engineering, calmly. Systems at scale.",
     type: "website",
+    url: siteConfig.url,
+    siteName: siteConfig.name,
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${siteConfig.name} — ${siteConfig.role}`,
+    description: "Engineering, calmly. Systems at scale.",
   },
 };
 
@@ -59,6 +89,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${sans.variable} ${mono.variable}`}
     >
       <head>
+        <JsonLd />
         <script dangerouslySetInnerHTML={{ __html: noFlash }} />
         {/* If JS is unavailable, GSAP never runs — keep reveal content visible. */}
         <noscript>
