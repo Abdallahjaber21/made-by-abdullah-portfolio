@@ -1396,6 +1396,25 @@ html[data-mode="light"] .approach {
   box-shadow: 0 0 0 3px var(--accent-soft), 0 0 24px -8px var(--accent-glow);
 }
 .field:focus-within label { color: var(--accent); }
+/* Validation error state — a dedicated danger red (independent of the theme
+   accent, which may itself be red), with an inline message under the field. */
+.field.has-error input[type="text"],
+.field.has-error input[type="email"],
+.field.has-error textarea {
+  border-color: #ff5470;
+}
+.field.has-error input:focus,
+.field.has-error textarea:focus {
+  border-color: #ff5470;
+  box-shadow: 0 0 0 3px rgba(255, 84, 112, 0.16);
+}
+.field.has-error label { color: #ff5470; }
+.field-error {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.01em;
+  color: #ff5470;
+}
 .field textarea { resize: vertical; min-height: 140px; font-family: var(--font-body); line-height: 1.5; }
 .field .char-count {
   position: absolute; bottom: 8px; right: 12px;

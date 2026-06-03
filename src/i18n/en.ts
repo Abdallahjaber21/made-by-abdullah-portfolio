@@ -215,6 +215,10 @@ export const en = {
       sentReply: "REPLY",
       error: "Something went wrong sending your message. Please try again, or email me directly.",
       retry: "Try again",
+      errNameRequired: "Please enter your name.",
+      errEmailRequired: "Please enter your email.",
+      errEmailInvalid: "Please enter a valid email address.",
+      errMessageRequired: "Please enter a short message.",
     },
   },
 

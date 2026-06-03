@@ -6,6 +6,7 @@ import { LocaleProvider } from "@/components/LocaleProvider";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
 import Loader from "@/components/Loader";
 import SmoothScroll from "@/components/motion/SmoothScroll";
+import { Analytics } from "@vercel/analytics/next";
 import { siteConfig } from "@/config/site";
 
 const sans = Geist({ subsets: ["latin"], variable: "--font-geist-sans", display: "swap" });
@@ -73,6 +74,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </ThemeProvider>
         </LocaleProvider>
         <SmoothScroll />
+        {/* Vercel Web Analytics — privacy-friendly visitor counts, no cookies.
+            Only sends data on Vercel deployments; a no-op locally. */}
+        <Analytics />
       </body>
     </html>
   );

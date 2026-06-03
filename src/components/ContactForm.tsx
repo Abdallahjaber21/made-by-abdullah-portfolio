@@ -9,7 +9,10 @@ type ProjectTypeKey = "web" | "mobile" | "saas" | "backend" | "ai" | "other";
 const PROJECT_TYPE_KEYS: ProjectTypeKey[] = ["web", "mobile", "saas", "backend", "ai", "other"];
 
 type Status = "idle" | "sending" | "sent" | "error";
+type FieldKey = "name" | "email" | "message";
+type FieldErrors = Partial<Record<FieldKey, string>>;
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 
 export default function ContactForm() {
@@ -21,6 +24,8 @@ export default function ContactForm() {
   const [projectType, setProjectType] = useState<ProjectTypeKey>("web");
   const [company, setCompany] = useState(""); // honeypot — must stay empty
   const [status, setStatus] = useState<Status>("idle");
+  const [errors, setErrors] = useState<FieldErrors>({});
+  const [touched, setTouched] = useState<Partial<Record<FieldKey, boolean>>>({});
   const [ref, setRef] = useState("REF-2026-AJ-····");
   const activity = useRef(0);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
@@ -29,6 +34,30 @@ export default function ContactForm() {
     setRef(`REF-2026-AJ-${Math.floor(Math.random() * 9000 + 1000)}`);
     return () => timers.current.forEach(clearTimeout);
   }, []);
+
+  // Validate current values against the active locale's messages.
+  const validate = (vals = { name, email, message }): FieldErrors => {
+    const e: FieldErrors = {};
+    if (!vals.name.trim()) e.name = f.errNameRequired;
+    if (!vals.email.trim()) e.email = f.errEmailRequired;
+    else if (!EMAIL_RE.test(vals.email.trim())) e.email = f.errEmailInvalid;
+    if (!vals.message.trim()) e.message = f.errMessageRequired;
+    return e;
+  };
+
+  // Re-validate a single field once it's been touched, so errors clear live.
+  const revalidate = (field: FieldKey, next: { name?: string; email?: string; message?: string }) => {
+    if (!touched[field]) return;
+    const merged = { name, email, message, ...next };
+    const e = validate(merged);
+    setErrors((prev) => ({ ...prev, [field]: e[field] }));
+  };
+
+  const markTouched = (field: FieldKey) => {
+    setTouched((prev) => ({ ...prev, [field]: true }));
+    const e = validate();
+    setErrors((prev) => ({ ...prev, [field]: e[field] }));
+  };
 
   const onFieldFocus = () => emitContact({ kind: "activation", level: 0.45 });
   const onFieldBlur = () => {
@@ -44,6 +73,17 @@ export default function ContactForm() {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (status === "sending") return;
+
+    // Client-side validation — block the request if anything is invalid.
+    const found = validate();
+    setTouched({ name: true, email: true, message: true });
+    setErrors(found);
+    if (Object.keys(found).length > 0) {
+      const first = (["name", "email", "message"] as FieldKey[]).find((k) => found[k]);
+      if (first) document.getElementById(`cf-${first === "message" ? "msg" : first}`)?.focus();
+      return;
+    }
+
     setStatus("sending");
     emitContact({ kind: "transmit" });
 
@@ -92,7 +132,7 @@ export default function ContactForm() {
         />
 
         <div className="field-grid">
-          <div className="field">
+          <div className={`field${errors.name ? " has-error" : ""}`}>
             <label htmlFor="cf-name">
               {f.name} <span className="lbl-id">01</span>
             </label>
@@ -102,13 +142,18 @@ export default function ContactForm() {
               type="text"
               placeholder={f.namePlaceholder}
               required
+              aria-invalid={!!errors.name}
+              aria-describedby={errors.name ? "cf-name-err" : undefined}
               value={name}
-              onChange={(e) => { setName(e.target.value); onType(); }}
+              onChange={(e) => { setName(e.target.value); onType(); revalidate("name", { name: e.target.value }); }}
               onFocus={onFieldFocus}
-              onBlur={onFieldBlur}
+              onBlur={() => { onFieldBlur(); markTouched("name"); }}
             />
+            {errors.name && (
+              <span className="field-error" id="cf-name-err">{errors.name}</span>
+            )}
           </div>
-          <div className="field">
+          <div className={`field${errors.email ? " has-error" : ""}`}>
             <label htmlFor="cf-email">
               {f.email} <span className="lbl-id">02</span>
             </label>
@@ -118,11 +163,16 @@ export default function ContactForm() {
               type="email"
               placeholder={f.emailPlaceholder}
               required
+              aria-invalid={!!errors.email}
+              aria-describedby={errors.email ? "cf-email-err" : undefined}
               value={email}
-              onChange={(e) => { setEmail(e.target.value); onType(); }}
+              onChange={(e) => { setEmail(e.target.value); onType(); revalidate("email", { email: e.target.value }); }}
               onFocus={onFieldFocus}
-              onBlur={onFieldBlur}
+              onBlur={() => { onFieldBlur(); markTouched("email"); }}
             />
+            {errors.email && (
+              <span className="field-error" id="cf-email-err">{errors.email}</span>
+            )}
           </div>
 
           <div className="field full">
@@ -143,7 +193,7 @@ export default function ContactForm() {
             </div>
           </div>
 
-          <div className="field full">
+          <div className={`field full${errors.message ? " has-error" : ""}`}>
             <label htmlFor="cf-msg">
               {f.details} <span className="lbl-id">04</span>
             </label>
@@ -152,14 +202,20 @@ export default function ContactForm() {
               name="message"
               placeholder={f.detailsPlaceholder}
               maxLength={1000}
+              required
+              aria-invalid={!!errors.message}
+              aria-describedby={errors.message ? "cf-msg-err" : undefined}
               value={message}
-              onChange={(e) => { setMessage(e.target.value); onType(); }}
+              onChange={(e) => { setMessage(e.target.value); onType(); revalidate("message", { message: e.target.value }); }}
               onFocus={onFieldFocus}
-              onBlur={onFieldBlur}
+              onBlur={() => { onFieldBlur(); markTouched("message"); }}
             />
             <span className="char-count">
               <b>{message.length}</b> / 1000
             </span>
+            {errors.message && (
+              <span className="field-error" id="cf-msg-err">{errors.message}</span>
+            )}
           </div>
         </div>
 
