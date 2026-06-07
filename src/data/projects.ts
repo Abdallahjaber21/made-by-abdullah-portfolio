@@ -46,10 +46,13 @@ export const PROJECTS: Project[] = [
     projectType: "web",
     urlLabel: "saxon · pos dashboard",
     shots: [
-      { src: "/assets/projects/saxon/home.png", label: "DASHBOARD"},
-      { src: "/assets/projects/saxon/transactions.png", label: "TRANSACTIONS"},
+      { src: "/assets/projects/saxon/dashboard.png", label: "DASHBOARD"},
+      { src: "/assets/projects/saxon/point-of-sale.png", label: "POINT OF SALE"},
       { src: "/assets/projects/saxon/products.png", label: "PRODUCTS"},
-      { src: "/assets/projects/saxon/barcodes.png", label: "BARCODES"},
+      { src: "/assets/projects/saxon/inventory.png", label: "INVENTORY"},
+      { src: "/assets/projects/saxon/reports.png", label: "REPORTS"},
+      { src: "/assets/projects/saxon/employees.png", label: "EMPLOYEES"},
+      { src: "/assets/projects/saxon/settings.png", label: "SETTINGS"},
     ],
   },
   {

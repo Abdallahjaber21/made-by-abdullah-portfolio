@@ -203,6 +203,11 @@ export default function SmoothScroll() {
         $$(".proj-visual").forEach((el) => {
           gsap.fromTo(el, { y: 50, opacity: 0.5 }, {
             y: -50, opacity: 1, ease: "none",
+            // Snap the scrubbed translate to whole pixels: a GPU-composited layer
+            // sitting at a fractional Y (e.g. -23.7px) resamples the bitmap and
+            // softens the screenshots. Rounding keeps the image pin-sharp while
+            // the parallax motion stays visually identical.
+            modifiers: { y: (v) => `${Math.round(parseFloat(v))}px` },
             scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: true },
           });
         });

@@ -939,6 +939,10 @@ html[data-mode="light"] .topbar.scrolled { background: rgba(244,243,238,0.85); }
    intentional rather than as gaps. */
 .media-slide { background: var(--bg); }
 .media-slide img { width: 100%; height: 100%; object-fit: contain; object-position: center; }
+/* Light theme: the screenshots are dark-UI captures. A cream (`--bg`) letterbox
+   behind them looks harsh and washes the edges out, so give the bands a neutral
+   dark backdrop — the dark shot then sits flush against a matching surface. */
+html[data-mode="light"] .media-slide { background: #0d0f24; }
 
 .slide-caption {
   position: absolute;
@@ -958,6 +962,13 @@ html[data-mode="light"] .topbar.scrolled { background: rgba(244,243,238,0.85); }
   pointer-events: none;
 }
 .slide-caption .step { color: var(--accent); }
+/* Light theme: the caption pill must not stay dark-navy — flip it to a light,
+   blurred surface with dark text so it reads as part of the light UI. */
+html[data-mode="light"] .slide-caption {
+  background: rgba(244,243,238,0.88);
+  color: var(--fg);
+  box-shadow: 0 0 0 1px var(--hairline);
+}
 
 /* progress bar (auto-advance) */
 .media-progress {
@@ -1014,6 +1025,11 @@ html[data-mode="light"] .topbar.scrolled { background: rgba(244,243,238,0.85); }
   position: relative;
 }
 .device-stage.is-web { padding: var(--s-6); }
+/* Light theme: drop the purple radial glow — over a cream stage it haze-washes
+   the framed screenshot. A clean neutral elevation keeps the shot crisp. */
+html[data-mode="light"] .device-stage {
+  background: linear-gradient(180deg, var(--bg-elev-1), var(--bg-elev-2));
+}
 .device-stage .stage-label {
   position: absolute;
   top: 12px; left: 16px;
